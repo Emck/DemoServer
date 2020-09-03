@@ -1,0 +1,41 @@
+{
+    "name": "demoserver",
+    "version": "1.0.0",
+    "description": "This is a DemoServer create by Nodejs, build deb file by node-deb",
+    "private": true,
+    "main": "app.js",
+    "scripts": {
+        "test": "node app.js",
+        "builddeb": "node-deb --no-default-package-dependencies -- app.js lib && echo \"Success: Move deb file to dist path !!\" && mv *.deb dist"
+    },
+    "author": "Emck",
+    "license": "MIT",
+    "node_deb": {
+        "init": "systemd",
+        "dependencies": "sudo",
+        "install_strategy": "npm-install",
+        "install_dir": "/opt",
+        "user": "emck",
+        "group": "emck",
+        "executable_name": "demoserver",
+        "package_name": "demoserver",
+        "templates": {
+            "control": "config/deb-templates/control",
+            "default_variables": "config/deb-templates/default",
+            "executable": "config/deb-templates/executable",
+            "preinst": "config/deb-templates/preinst",
+            "postinst": "config/deb-templates/postinst",
+            "postrm": "config/deb-templates/postrm",
+            "prerm": "config/deb-templates/prerm",
+            "systemd_service": "config/deb-templates/systemdservice",
+            "sysv_init": "config/deb-templates/sysv-init",
+            "upstart_conf": "config/deb-templates/upstart.conf"
+        },
+        "entrypoints": {
+            "daemon": "app.js --daemon"
+        }
+    },
+    "dependencies": {
+        "express": "^4.17.1"
+    }
+}
